@@ -8,6 +8,7 @@ defmodule NervesHcsr04.MixProject do
       app: :nerves_hcsr04,
       version: "0.1.0",
       elixir: "~> 1.4",
+      compilers: [:elixir_make] ++ Mix.compilers(),
       target: @target,
       archives: [nerves_bootstrap: "~> 1.0"],
       deps_path: "deps/#{@target}",
@@ -37,6 +38,7 @@ defmodule NervesHcsr04.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:elixir_make, "~> 0.4.1"},
       {:nerves, "~> 1.0", runtime: false},
       {:shoehorn, "~> 0.2"}
     ] ++ deps(@target)

@@ -19,3 +19,6 @@ erl_crash.dump
 *.ez
 *.beam
 /config/*.secret.exs
+
+priv/nerves_hcsr04
+src/**/*.o

@@ -9,4 +9,9 @@ defmodule NervesHcsr04 do
     |> Path.join("drive.py")
     System.cmd "python", [drive], into: IO.stream(:stdio, :line)
   end
+
+  def distance_from_c do
+    
+  end
+
 end
