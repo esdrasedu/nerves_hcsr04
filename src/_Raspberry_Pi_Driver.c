@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "erl_comm.c"
+#include "erl_common.c"
 #include "erl_interface.h"
 #include "ei.h"
 
