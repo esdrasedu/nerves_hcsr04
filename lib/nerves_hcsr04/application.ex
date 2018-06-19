@@ -19,7 +19,6 @@ defmodule NervesHcsr04.Application do
     [
       # Starts a worker by calling: NervesHcsr04.Worker.start_link(arg)
       # {NervesHcsr04.Worker, arg},
-      Supervisor.Spec.worker(MyGenServer, [{16, 18}, [name: MyGenServer]])
     ]
   end
 

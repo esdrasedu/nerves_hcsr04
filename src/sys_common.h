@@ -8,11 +8,8 @@
 #define TIMEOUT_PING -2
 #define TIMEOUT_PONG -3
 
-void busy_wait_milliseconds(uint32_t millis);
-void sleep_milliseconds(uint32_t millis);
-void set_max_priority(void);
-void set_default_priority(void);
-void initialiseEpoch(void);
-extern unsigned int micros(void);
+void delay_micro(uint32_t micro);
+uint32_t micros(void);
+uint32_t diff_micros(uint32_t millis_left);
 
 #endif

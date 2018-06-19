@@ -22,8 +22,8 @@ ifeq ($(MIX_TARGET), rpi)
 	SRC += $(wildcard src/Raspberry_Pi/*.c) src/_Raspberry_Pi_Driver.c
 endif
 
-ifeq ($(MIX_TARGET), rpi0)
-	SRC += $(wildcard src/Raspberry_Pi/*.c) src/_Raspberry_Pi_Driver.c
+ifeq ($(MIX_TARGET), rpi0_completed_system)
+	SRC += $(wildcard src/Raspberry_Pi_Line/*.c) src/_Raspberry_Pi_Driver_Line.c
 endif
 
 ifeq ($(MIX_TARGET), host)

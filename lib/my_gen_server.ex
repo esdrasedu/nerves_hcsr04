@@ -7,4 +7,8 @@ defmodule MyGenServer do
     IO.puts("Distance: #{d}\n")
   end
 
+  def listen({:error, error}) do
+    IO.puts("Error: #{error}\n")
+  end
+
 end
