@@ -1,43 +1,51 @@
+#include <stdio.h>
 #include "pi_sensor.h"
-#include "pi_mmio.h"
-
-#include <time.h>
+#include "bcm2835.h"
 
 int pi_sensor(int echo, int trig, float* distance) {
 
-  time_t ping, pong;
+  uint32_t started, ping, pong;
+  uint32_t timeout = 500000; // 0.5 sec = 85m
 
   *distance = 0.0f;
 
-  if (pi_mmio_init() < 0) {
+  echo = RPI_GPIO_P1_16;
+  trig = RPI_GPIO_P1_18;
+
+  if (!bcm2835_init())
     return ERROR_INIT_GPIO;
-  }
 
-  pi_mmio_set_input(echo);
-  pi_mmio_set_output(trig);
+  bcm2835_gpio_fsel(echo, BCM2835_GPIO_FSEL_INPT);
+  bcm2835_gpio_fsel(trig, BCM2835_GPIO_FSEL_OUTP);
+  bcm2835_gpio_write(trig, LOW);
+  bcm2835_delay(2);
 
-  set_max_priority();
+  bcm2835_gpio_write(trig, HIGH);
 
-  pi_mmio_set_low(trig);
-  sleep_milliseconds(1000);
+  bcm2835_delay(10);
 
-  pi_mmio_set_high(trig);
+  bcm2835_gpio_write(trig, LOW);
 
-  busy_wait_milliseconds(10);
+  started = micros();
 
-  pi_mmio_set_low(trig);
+	while (bcm2835_gpio_lev(echo) == 0 && (micros() - started) < timeout) {}
 
-	while (pi_mmio_input(echo) == 0) {}
+  uint32_t diff = micros() - started;
 
-  ping = time(NULL);
+  if (diff > timeout) { return TIMEOUT_PING; }
 
-	while (pi_mmio_input(echo) == 1) {}
+  ping = micros();
 
-	pong = time(NULL);
+	while (bcm2835_gpio_lev(echo) == 1 && (micros() - ping) < timeout) {}
 
-  set_default_priority();
+	if ((micros() - ping) > timeout) { return TIMEOUT_PONG; }
 
-	*distance = (float) difftime(pong, ping) * 0.017150;
+	pong = micros();
+
+  bcm2835_close();
+
+	*distance = ((float) (pong - ping)) * 0.0170145;
+	// (((( (pong - ping)  / 2 ) / 1000) / 1000) * 340.29) * 100
 
 	return SUCCESS;
 }

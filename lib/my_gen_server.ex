@@ -1,14 +1,16 @@
 defmodule MyGenServer do
   use NervesHcsr04Drive
 
-  def listen({:ok, e, t, d}) do
-    IO.puts("Listen event on MyGenServer")
+  def listen({:ok, d, _port, {e, t}}) do
+    IO.puts("Success on MyGenServer")
     IO.puts("Echo: #{e}, Trig: #{t}\n")
     IO.puts("Distance: #{d}\n")
   end
 
-  def listen({:error, error}) do
-    IO.puts("Error: #{error}\n")
+  def listen({:error, code_error, _port, {e, t}}) do
+    IO.puts("Error on MyGenServer")
+    IO.puts("Echo: #{e}, Trig: #{t}\n")
+    IO.puts("Error: #{code_error}\n")
   end
 
 end

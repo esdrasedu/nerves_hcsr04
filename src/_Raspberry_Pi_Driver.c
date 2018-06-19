@@ -25,37 +25,27 @@ int main(int argc, char *argv[]) {
 
   erl_init(NULL, 0);
 
-  for(;;){
+  while (read_cmd(buf) > 0) {
 
     float distance = 0;
     int result = pi_sensor(echo, trig, &distance);
 
-    if(result == 0){
-
+    if(result == SUCCESS){
       arr[0] = erl_mk_atom("ok");
-      arr[1] = erl_mk_int(echo);
-      arr[2] = erl_mk_int(trig);
-      arr[3] = erl_mk_float(distance);
-
-      tuple  = erl_mk_tuple(arr, 4);
-
-      erl_encode(tuple, buf);
-
-      write_cmd(buf, erl_term_len(tuple));
-
-      erl_free_term(tuple);
     } else {
       arr[0] = erl_mk_atom("error");
-      arr[1] = erl_mk_int(result);
-
-      tuple  = erl_mk_tuple(arr, 2);
-
-      erl_encode(tuple, buf);
-
-      write_cmd(buf, erl_term_len(tuple));
-
-      erl_free_term(tuple);
     }
+    arr[1] = erl_mk_int(echo);
+    arr[2] = erl_mk_int(trig);
+    arr[3] = erl_mk_float(distance);
+
+    tuple  = erl_mk_tuple(arr, 4);
+
+    erl_encode(tuple, buf);
+
+    write_cmd(buf, erl_term_len(tuple));
+
+    erl_free_term(tuple);
   }
 
   return 1;

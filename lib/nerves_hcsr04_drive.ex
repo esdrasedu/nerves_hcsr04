@@ -10,6 +10,10 @@ defmodule NervesHcsr04Drive do
   :ok
   iex> {:ok, sensor} = MyGenServer.start_link({8, 9})
   :ok
+  iex> :ok = MyGenServer.update(sensor)
+  :ok
+  iex> Process.sleep(1000)
+  :ok
   iex> {:ok, distance} = MyGenServer.info(sensor)
   {:ok, 27.22}
   ```
@@ -19,22 +23,34 @@ defmodule NervesHcsr04Drive do
   iex> defmodule MyGenServer do
          use NervesHcsr04
 
-         def listen({:ok, e, t, d}) do
-           IO.puts("Listen event on MyGenServer")
+         def listen({:ok, d, _port, {e, t}}) do
+           IO.puts("Success on MyGenServer")
            IO.puts("Echo: #{e}, Trig: #{t}\n")
            IO.puts("Distance: #{d}\n")
+         end
+
+         def listen({:error, code_error, _port, {e, t}}) do
+           IO.puts("Error on MyGenServer")
+           IO.puts("Echo: #{e}, Trig: #{t}\n")
+           IO.puts("Error: #{code_error}\n")
          end
        end
   :ok
   iex> {:ok, sensor} = MyGenServer.start_link({8, 9})
   :ok
-  Listen event on MyGenServer
+  iex> :ok = MyGenServer.update(sensor)
+  :ok
+  Success on MyGenServer
   Echo: 8, Trig: 9
   Distance: 27.20
 
-  Listen event on MyGenServer
+  iex> {:ok, sensor} = MyGenServer.start_link({8, 10})
+  :ok
+  iex> :ok = MyGenServer.update(sensor)
+  :ok
+  Error on MyGenServer
   Echo: 8, Trig: 9
-  Distance: 27.25
+  Error: -2
   ```
   """
 
@@ -46,14 +62,20 @@ defmodule NervesHcsr04Drive do
       end
 
       def init({echo, trig}) do
-        Port.open({:spawn, "#{path()} #{echo} #{trig}"}, [:binary, packet: 2])
-        {:ok, {:ok, echo, trig, nil}}
+        port = Port.open({:spawn, "#{path()} #{echo} #{trig}"}, [:binary, packet: 2])
+        {:ok, {:ok, nil, port, {echo, trig}}}
       end
 
-      def handle_info({_port, {:data, data}}, _state) do
-        states = :erlang.binary_to_term(data)
+      def handle_info({port, {:data, data}}, _state) do
+        {type, echo, trig, result} = :erlang.binary_to_term(data)
+        states = {type, result, port, {echo, trig}}
         __MODULE__.listen(states)
         {:noreply, states}
+      end
+
+      def handle_cast(:update, {_type, _result, port, _pins} = state) do
+        true = Port.command(port, "update")
+        {:noreply, state}
       end
 
       def handle_call(:info, _from, state),
@@ -61,9 +83,13 @@ defmodule NervesHcsr04Drive do
 
       defp path, do: "#{:code.priv_dir(:nerves_hcsr04)}/nerves_hcsr04"
 
+      def update(pid) do
+        GenServer.cast(pid, :update)
+      end
+
       def info(pid) do
-        {:ok, _echo, _trig, distance} = GenServer.call(pid, :info)
-        {:ok, distance}
+        {type, result, _port, _pins} = GenServer.call(pid, :info)
+        {type, result}
       end
 
       def listen(states), do: states

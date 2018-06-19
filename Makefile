@@ -11,8 +11,8 @@ ifeq ($(ERL_EI_INCLUDE_DIR),)
 endif
 
 # Set Erlang-specific compile and linker flags
-ERL_CFLAGS ?= -I$(ERL_EI_INCLUDE_DIR)
-ERL_LDFLAGS ?= -L$(ERL_EI_LIBDIR) -lerl_interface -lei
+ERL_CFLAGS ?= -I $(ERL_EI_INCLUDE_DIR)
+ERL_LDFLAGS ?= -L $(ERL_EI_LIBDIR) -lerl_interface -lei
 
 SRC = src/sys_common.c
 LDFLAGS +=
@@ -22,8 +22,8 @@ ifeq ($(MIX_TARGET), rpi)
 	SRC += $(wildcard src/Raspberry_Pi/*.c) src/_Raspberry_Pi_Driver.c
 endif
 
-ifeq ($(MIX_TARGET), rpi0_completed_system)
-	SRC += $(wildcard src/Raspberry_Pi_Line/*.c) src/_Raspberry_Pi_Driver_Line.c
+ifeq ($(MIX_TARGET), rpi0)
+	SRC += $(wildcard src/Raspberry_Pi/*.c) src/_Raspberry_Pi_Driver.c
 endif
 
 ifeq ($(MIX_TARGET), host)
