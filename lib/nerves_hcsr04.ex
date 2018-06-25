@@ -22,13 +22,11 @@ defmodule NervesHcsr04 do
   ```
   iex> defmodule MyGenServer do
          use NervesHcsr04
-
          def listen({:ok, d, _port, {e, t}}) do
            IO.puts("Success on MyGenServer")
            IO.puts("Echo: #{e}, Trig: #{t}\n")
            IO.puts("Distance: #{d}\n")
          end
-
          def listen({:error, code_error, _port, {e, t}}) do
            IO.puts("Error on MyGenServer")
            IO.puts("Echo: #{e}, Trig: #{t}\n")
@@ -43,7 +41,6 @@ defmodule NervesHcsr04 do
   Success on MyGenServer
   Echo: 8, Trig: 9
   Distance: 27.20
-
   iex> {:ok, sensor} = MyGenServer.start_link({8, 10})
   :ok
   iex> :ok = MyGenServer.update(sensor)
