@@ -16,7 +16,6 @@ defmodule NervesHcsr04.MixProject do
 
   def application do
     [
-      mod: {NervesHcsr04.Application, []},
       extra_applications: [:logger]
     ]
   end
