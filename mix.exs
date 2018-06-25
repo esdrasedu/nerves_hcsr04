@@ -33,6 +33,7 @@ defmodule NervesHcsr04.MixProject do
     [
       name: "nerves_hcsr04",
       files: ["lib", "priv", "mix.exs", "README.md"],
+      maintainers: ["Esdras Eduardo"],
       licenses: ["Apache 2.0"],
       links: %{"GitHub" => "https://github.com/esdrasedu/nerves_hcsr04"}
     ]
