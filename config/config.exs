@@ -5,19 +5,29 @@
 # is restricted to this project.
 use Mix.Config
 
-# Customize non-Elixir parts of the firmware.  See
-# https://hexdocs.pm/nerves/advanced-configuration.html for details.
-config :nerves, :firmware, rootfs_overlay: "rootfs_overlay"
+# This configuration is loaded before any dependency and is restricted
+# to this project. If another project depends on this project, this
+# file won't be loaded nor affect the parent project. For this reason,
+# if you want to provide default values for your application for
+# 3rd-party users, it should be done in your "mix.exs" file.
 
-# Use shoehorn to start the main application. See the shoehorn
-# docs for separating out critical OTP applications such as those
-# involved with firmware updates.
-config :shoehorn,
-  init: [:nerves_runtime],
-  app: Mix.Project.config()[:app]
+# You can configure for your application as:
+#
+#     config :nerves_dht, key: :value
+#
+# And access this configuration in your application as:
+#
+#     Application.get_env(:nerves_dht, :key)
+#
+# Or configure a 3rd-party app:
+#
+#     config :logger, level: :info
+#
 
-# Import target specific config. This must remain at the bottom
-# of this file so it overrides the configuration defined above.
-# Uncomment to use target specific configurations
-
-# import_config "#{Mix.Project.config[:target]}.exs"
+# It is also possible to import configuration files, relative to this
+# directory. For example, you can emulate configuration per environment
+# by uncommenting the line below and defining dev.exs, test.exs and such.
+# Configuration from the imported file will override the ones defined
+# here (which is why it is important to import them last).
+#
+#     import_config "#{Mix.env}.exs"
