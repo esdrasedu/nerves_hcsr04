@@ -22,7 +22,10 @@ defmodule NervesHcsr04.MixProject do
   end
 
   defp deps do
-    [{:elixir_make, "~> 0.4.1"}]
+    [
+      {:elixir_make, "~> 0.4.1"},
+      {:ex_doc, ">= 0.0.0", only: :dev}
+    ]
   end
 
   defp description() do
