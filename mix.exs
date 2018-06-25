@@ -9,7 +9,6 @@ defmodule NervesHcsr04.MixProject do
       compilers: [:elixir_make] ++ Mix.compilers(),
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env() == :prod,
-      aliases: [loadconfig: [&bootstrap/1]],
       deps: deps()
     ]
   end
