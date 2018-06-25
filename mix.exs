@@ -35,7 +35,7 @@ defmodule NervesHcsr04.MixProject do
   defp package() do
     [
       name: "nerves_hcsr04",
-      files: ["src", "lib", "priv", "test", "config", "mix.exs", "README.md", "LICENSE", "Makefile"],
+      files: ["src/**/*.h", "src/**/*.c", "lib", "priv", "test", "config", "mix.exs", "README.md", "LICENSE", "Makefile"],
       maintainers: ["Esdras Eduardo"],
       licenses: ["GNU 3.0"],
       links: %{"GitHub" => "https://github.com/esdrasedu/nerves_hcsr04"}
