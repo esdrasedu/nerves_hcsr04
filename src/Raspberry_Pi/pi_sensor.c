@@ -1,16 +1,17 @@
 #include <stdio.h>
 #include "pi_sensor.h"
 #include "bcm2835.h"
+#include "gpio_pin.h"
 
-int pi_sensor(int echo, int trig, float* distance) {
+int pi_sensor(int echo_number, int trig_number, float* distance) {
 
   uint32_t started, ping, pong;
   uint32_t timeout = 500000; // 0.5 sec = 85m
 
   *distance = 0.0f;
 
-  echo = RPI_GPIO_P1_16;
-  trig = RPI_GPIO_P1_18;
+  int echo = gpio_number(echo_number);
+  int trig = gpio_number(trig_number);
 
   if (!bcm2835_init())
     return ERROR_INIT_GPIO;
