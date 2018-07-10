@@ -32,12 +32,15 @@ int main(int argc, char *argv[]) {
 
     if(result == SUCCESS){
       arr[0] = erl_mk_atom("ok");
+      arr[1] = erl_mk_int(echo);
+      arr[2] = erl_mk_int(trig);
+      arr[3] = erl_mk_float(distance);
     } else {
       arr[0] = erl_mk_atom("error");
+      arr[1] = erl_mk_int(echo);
+      arr[2] = erl_mk_int(trig);
+      arr[3] = erl_mk_int(result);
     }
-    arr[1] = erl_mk_int(echo);
-    arr[2] = erl_mk_int(trig);
-    arr[3] = erl_mk_float(distance);
 
     tuple  = erl_mk_tuple(arr, 4);
 

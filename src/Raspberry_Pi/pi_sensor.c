@@ -13,6 +13,9 @@ int pi_sensor(int echo_number, int trig_number, float* distance) {
   int echo = gpio_number(echo_number);
   int trig = gpio_number(trig_number);
 
+  if(echo == 0 || trig == 0)
+    return ERROR_GPIO_PIN;
+
   if (!bcm2835_init())
     return ERROR_INIT_GPIO;
 

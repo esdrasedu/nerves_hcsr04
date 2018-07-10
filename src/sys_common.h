@@ -7,6 +7,7 @@
 #define ERROR_INIT_GPIO -1
 #define TIMEOUT_PING -2
 #define TIMEOUT_PONG -3
+#define ERROR_GPIO_PIN -4
 
 uint32_t micros(void);
 

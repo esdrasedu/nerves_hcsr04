@@ -774,7 +774,7 @@ typedef enum
 } bcm2835PadGroup;
 
 /*! \brief GPIO Pin Numbers
-  
+
   Here we define Raspberry Pin GPIO pins on P1 in terms of the underlying BCM GPIO pin numbers.
   These can be passed as a pin number to any function requiring a pin.
   Not all pins on the RPi 26 bin IDE plug are connected to GPIO pins
