@@ -4,7 +4,7 @@ defmodule NervesHcsr04.MixProject do
   def project do
     [
       app: :nerves_hcsr04,
-      version: "0.1.1",
+      version: "0.1.2",
       compilers: [:elixir_make] ++ Mix.compilers(),
       description: description(),
       package: package(),
@@ -22,7 +22,7 @@ defmodule NervesHcsr04.MixProject do
 
   defp deps do
     [
-      {:elixir_make, "~> 0.4.1"},
+      {:elixir_make, "~> 0.6.1"},
       {:ex_doc, ">= 0.0.0", only: :dev}
     ]
   end

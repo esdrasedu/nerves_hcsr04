@@ -1,7 +1,9 @@
 defmodule NervesHcsr04 do
 
+
   @moduledoc ~S"""
   Read HC-SR04 sensor (Sensor of distance, ultra sonic)
+
   Example usage:
   ```
   iex> defmodule MyGenServer do
@@ -17,20 +19,20 @@ defmodule NervesHcsr04 do
   iex> {:ok, distance} = MyGenServer.info(sensor)
   {:ok, 27.22}
   ```
-  You can use `listen` too listen event of sensor too.
+  You can use `listen` to listen event of sensor too.
   For example:
   ```
   iex> defmodule MyGenServer do
          use NervesHcsr04
          def listen({:ok, d, _port, {e, t}}) do
-           IO.puts("Success on MyGenServer")
-           IO.puts("Echo: #{e}, Trig: #{t}\n")
-           IO.puts("Distance: #{d}\n")
+           Logger.info("Success on MyGenServer")
+           Logger.info("Echo: #{e}, Trig: #{t}\n")
+           Logger.info("Distance: #{d}\n")
          end
          def listen({:error, code_error, _port, {e, t}}) do
-           IO.puts("Error on MyGenServer")
-           IO.puts("Echo: #{e}, Trig: #{t}\n")
-           IO.puts("Error: #{code_error}\n")
+           Logger.info("Error on MyGenServer")
+           Logger.info("Echo: #{e}, Trig: #{t}\n")
+           Logger.info("Error: #{code_error}\n")
          end
        end
   :ok
@@ -49,6 +51,13 @@ defmodule NervesHcsr04 do
   Echo: 8, Trig: 9
   Error: -2
   ```
+
+  The error codes are:
+    SUCCESS 0
+    ERROR_INIT_GPIO -1
+    TIMEOUT_PING -2
+    TIMEOUT_PONG -3
+    ERROR_GPIO_PIN -4
   """
 
   defmacro __using__(_opts) do
@@ -64,7 +73,8 @@ defmodule NervesHcsr04 do
       end
 
       def handle_info({port, {:data, data}}, _state) do
-        {type, echo, trig, result} = :erlang.binary_to_term(data)
+        {type, echo, trig, result} = List.first(:erlang.binary_to_term(data))
+
         states = {type, result, port, {echo, trig}}
         __MODULE__.listen(states)
         {:noreply, states}

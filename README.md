@@ -1,31 +1,10 @@
 # NervesHcsr04
+Library to read from the HC_SR04 ultrasonic distance sensor in an Elixir Nerves project.
 
-**TODO: Add description**
+You always need to set the correct target first, so the C files are cross-compiled with the correct target. 
 
-## Targets
+Add the dependency `{ :nerves_hcsr04, "~> 0.1.2" }` to your mix.exs, then run `mix deps.get && mix deps.compile`.
 
-Nerves applications produce images for hardware targets based on the
-`MIX_TARGET` environment variable. If `MIX_TARGET` is unset, `mix` builds an
-image that runs on the host (e.g., your laptop). This is useful for executing
-logic tests, running utilities, and debugging. Other targets are represented by
-a short name like `rpi3` that maps to a Nerves system image for that platform.
-All of this logic is in the generated `mix.exs` and may be customized. For more
-information about targets see:
+Afterwards build and upload the firmware to the device. 
 
-https://hexdocs.pm/nerves/targets.html#content
-
-## Getting Started
-
-To start your Nerves app:
-  * `export MIX_TARGET=my_target` or prefix every command with
-    `MIX_TARGET=my_target`. For example, `MIX_TARGET=rpi3`
-  * Install dependencies with `mix deps.get`
-  * Create firmware with `mix firmware`
-  * Burn to an SD card with `mix firmware.burn`
-
-## Learn more
-
-  * Official docs: https://hexdocs.pm/nerves/getting-started.html
-  * Official website: http://www.nerves-project.org/
-  * Discussion Slack elixir-lang #nerves ([Invite](https://elixir-slackin.herokuapp.com/))
-  * Source: https://github.com/nerves-project/nerves
+More detailed usage instructions are in the file `lib/nerves_hcsr04.ex` as code comments. 
