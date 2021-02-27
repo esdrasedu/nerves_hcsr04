@@ -73,7 +73,7 @@ defmodule NervesHcsr04 do
       end
 
       def handle_info({port, {:data, data}}, _state) do
-        {type, echo, trig, result} = List.first(:erlang.binary_to_term(data))
+        {type, echo, trig, result} = :erlang.binary_to_term(data)
 
         states = {type, result, port, {echo, trig}}
         __MODULE__.listen(states)

@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     if (result == SUCCESS)
     {
       ei_x_format(&output,
-                  "[{~a,~i,~i,~f}]",
+                  "{~a,~i,~i,~f}",
                   "ok",
                   echo,
                   trig,
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     else
     {
       ei_x_format(&output,
-                  "[{~a,~i,~i,~i}]",
+                  "{~a,~i,~i,~i}",
                   "error",
                   echo,
                   trig,
