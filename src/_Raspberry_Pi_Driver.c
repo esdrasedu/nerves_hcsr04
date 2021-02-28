@@ -3,52 +3,58 @@
 #include <unistd.h>
 
 #include "erl_common.c"
-#include "erl_interface.h"
 #include "ei.h"
 
 #include "Raspberry_Pi/pi_sensor.h"
 
 typedef unsigned char byte;
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
 
-  if (argc != 3) {
+  if (argc != 3)
+  {
     fprintf(stderr, "Usage: %s [GPIO_ECHO] [GPIO_TRIG] \n", argv[0]);
     exit(EXIT_FAILURE);
   }
 
+  ei_init();
+
   int echo = atoi(argv[1]);
   int trig = atoi(argv[2]);
 
-  ETERM * arr[4], *tuple;
-  unsigned char buf[BUFSIZ];
+  byte input[100];
+  ei_x_buff output;
 
-  erl_init(NULL, 0);
-
-  while (read_cmd(buf) > 0) {
-
+  while (read_cmd(input) > 0)
+  {
     float distance = 0;
     int result = pi_sensor(echo, trig, &distance);
 
-    if(result == SUCCESS){
-      arr[0] = erl_mk_atom("ok");
-      arr[1] = erl_mk_int(echo);
-      arr[2] = erl_mk_int(trig);
-      arr[3] = erl_mk_float(distance);
-    } else {
-      arr[0] = erl_mk_atom("error");
-      arr[1] = erl_mk_int(echo);
-      arr[2] = erl_mk_int(trig);
-      arr[3] = erl_mk_int(result);
+    ei_x_new(&output);
+
+    if (result == SUCCESS)
+    {
+      ei_x_format(&output,
+                  "{~a,~i,~i,~f}",
+                  "ok",
+                  echo,
+                  trig,
+                  distance);
+    }
+    else
+    {
+      ei_x_format(&output,
+                  "{~a,~i,~i,~i}",
+                  "error",
+                  echo,
+                  trig,
+                  result);
     }
 
-    tuple  = erl_mk_tuple(arr, 4);
+    write_cmd(output.buff, output.index);
 
-    erl_encode(tuple, buf);
-
-    write_cmd(buf, erl_term_len(tuple));
-
-    erl_free_term(tuple);
+    ei_x_free(&output);
   }
 
   return 1;
